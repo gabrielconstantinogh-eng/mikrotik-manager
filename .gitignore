@@ -1,0 +1,131 @@
+node_modules
+dist
+out
+.DS_Store
+.eslintcache
+*.log*
+
+# ==========================================
+# Dependências
+# ==========================================
+node_modules/
+.pnp
+.pnp.js
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# ==========================================
+# Builds (React / Vite / Tailwind)
+# ==========================================
+dist/
+dist-ssr/
+build/
+.vite/
+*.local
+
+# ==========================================
+# Builds e Empacotamento do Electron
+# ==========================================
+# Saídas do electron-builder e electron-forge
+out/
+release/
+dist-electron/
+app/dist/
+
+# Instaladores e executáveis gerados
+*.exe
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.snap
+*.AppImage
+*.tar.gz
+*.zip
+*.blockmap
+latest.yml
+latest-mac.yml
+latest-linux.yml
+
+# ==========================================
+# Variáveis de Ambiente e Segredos
+# ==========================================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.p12
+*.pfx
+*.cer
+
+# ==========================================
+# Logs e Diagnósticos
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm
+.eslintcache
+.stylelintcache
+
+# ==========================================
+# TypeScript e Caches
+# ==========================================
+*.tsbuildinfo
+.cache/
+.parcel-cache/
+.turbo/
+
+# ==========================================
+# Testes e Coverage
+# ==========================================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
+# ==========================================
+# IDEs e Editores
+# ==========================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==========================================
+# Sistema Operacional
+# ==========================================
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
