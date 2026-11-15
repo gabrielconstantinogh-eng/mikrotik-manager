@@ -1,18 +1,31 @@
-import { contextBridge } from 'electron'
+import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
-// Custom APIs for renderer
-const api = {}
+const api = {
+  equipment: {
+    list: () => ipcRenderer.invoke('equipment:list'),
 
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
+    create: (data) =>
+      ipcRenderer.invoke('equipment:create', data),
+
+    update: (id, data) =>
+      ipcRenderer.invoke('equipment:update', id, data),
+
+    delete: (id) =>
+      ipcRenderer.invoke('equipment:delete', id)
+  },
+
+  security: {
+    getStatus: () => ipcRenderer.invoke('security:status')
+  }
+}
+
 if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
   } catch (error) {
-    console.error(error)
+    console.error('Erro ao disponibilizar APIs:', error)
   }
 } else {
   window.electron = electronAPI

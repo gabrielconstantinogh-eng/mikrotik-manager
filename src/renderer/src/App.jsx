@@ -1,7 +1,9 @@
+
 import { HashRouter, Routes, Route } from 'react-router-dom'
 
 import MainLayout from './layouts/MainLayout'
 import Dashboard from './pages/Dashboard'
+import Equipamentos from './pages/Equipamentos'
 import PlaceholderPage from './pages/PlaceholderPage'
 
 function App() {
@@ -13,12 +15,7 @@ function App() {
 
           <Route
             path="equipamentos"
-            element={
-              <PlaceholderPage
-                title="Equipamentos"
-                description="Gerencie seus roteadores MikroTik."
-              />
-            }
+            element={<Equipamentos />}
           />
 
           <Route

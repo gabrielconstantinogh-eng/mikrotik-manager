@@ -3,6 +3,10 @@ import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+import { initializeDatabase } from './database/connection'
+import { registerEquipmentHandlers } from './ipc/equipmentHandlers'
+import { registerSecurityHandlers } from './ipc/securityHandlers'
+
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -41,6 +45,17 @@ function createWindow() {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  //handlers
+  try {
+    initializeDatabase() //inicializar database ao abrir aplicação
+    registerEquipmentHandlers() //inicializar CRUD de mikrotiks
+    registerSecurityHandlers() //inicializar handler de segurança em relação as senhas 
+  } catch (error) {
+    console.error('Erro ao inicializar banco de dados:', error)
+    app.quit()
+    return
+  }
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
