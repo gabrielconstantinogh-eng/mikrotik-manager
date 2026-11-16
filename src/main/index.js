@@ -6,6 +6,7 @@ import icon from '../../resources/icon.png?asset'
 import { initializeDatabase } from './database/connection'
 import { registerEquipmentHandlers } from './ipc/equipmentHandlers'
 import { registerSecurityHandlers } from './ipc/securityHandlers'
+import { registerConnectivityHandlers } from './ipc/connectivityHandlers'
 
 function createWindow() {
   // Create the browser window.
@@ -50,7 +51,8 @@ app.whenReady().then(() => {
   try {
     initializeDatabase() //inicializar database ao abrir aplicação
     registerEquipmentHandlers() //inicializar CRUD de mikrotiks
-    registerSecurityHandlers() //inicializar handler de segurança em relação as senhas 
+    registerSecurityHandlers() //inicializar handler de segurança em relação as senhas
+    registerConnectivityHandlers() //inicializar handler de check de conectividade
   } catch (error) {
     console.error('Erro ao inicializar banco de dados:', error)
     app.quit()

@@ -5,6 +5,7 @@ import MainLayout from './layouts/MainLayout'
 import Dashboard from './pages/Dashboard'
 import Equipamentos from './pages/Equipamentos'
 import PlaceholderPage from './pages/PlaceholderPage'
+import Conexoes from './pages/Conexoes'
 
 function App() {
   return (
@@ -20,14 +21,9 @@ function App() {
 
           <Route
             path="conexoes"
-            element={
-              <PlaceholderPage
-                title="Conexões"
-                description="Gerencie suas conexões com os equipamentos."
-              />
-            }
+            element={<Conexoes />}
           />
-
+          
           <Route
             path="monitoramento"
             element={

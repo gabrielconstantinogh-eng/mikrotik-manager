@@ -41,7 +41,7 @@ import {
       }`
   
     return (
-      <aside className="flex w-64 shrink-0 flex-col border-r border-slate-800 bg-slate-900 p-5">
+      <aside className="flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-slate-800 bg-slate-900 p-5">
         <div className="mb-10 flex items-center gap-3">
           <div className="rounded-xl bg-blue-600 p-2.5">
             <Router size={23} />

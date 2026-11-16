@@ -1,4 +1,6 @@
+
 import { getDatabase } from './connection'
+import { encryptPassword } from '../security/credentialService'
 
 function validateEquipment(data) {
   if (!data || typeof data !== 'object') {
@@ -10,10 +12,12 @@ function validateEquipment(data) {
   const username = String(data.username ?? '').trim()
   const description = String(data.description ?? '').trim()
   const port = Number(data.port ?? 8291)
+  const password = String(data.password ?? '')
 
   if (!name) throw new Error('Informe o nome do equipamento.')
   if (!host) throw new Error('Informe o endereço IP ou hostname.')
   if (!username) throw new Error('Informe o usuário.')
+
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
     throw new Error('A porta deve ser um número entre 1 e 65535.')
   }
@@ -24,7 +28,8 @@ function validateEquipment(data) {
     port,
     username,
     description,
-    favorite: data.favorite ? 1 : 0
+    favorite: data.favorite ? 1 : 0,
+    password
   }
 }
 
@@ -43,12 +48,19 @@ export function createEquipment(data) {
   const db = getDatabase()
   const equipment = validateEquipment(data)
 
+  const passwordEncrypted = equipment.password
+    ? encryptPassword(equipment.password)
+    : null
+
   const result = db.prepare(`
     INSERT INTO equipments
-      (name, host, port, username, description, favorite)
+      (name, host, port, username, description, favorite, password_encrypted)
     VALUES
-      (@name, @host, @port, @username, @description, @favorite)
-  `).run(equipment)
+      (@name, @host, @port, @username, @description, @favorite, @passwordEncrypted)
+  `).run({
+    ...equipment,
+    passwordEncrypted
+  })
 
   return db.prepare(`
     SELECT id, name, host, port, username,
@@ -62,7 +74,19 @@ export function updateEquipment(id, data) {
   const db = getDatabase()
   const equipment = validateEquipment(data)
 
-  const result = db.prepare(`
+  const currentEquipment = db.prepare(`
+    SELECT id, password_encrypted
+    FROM equipments
+    WHERE id = ?
+  `).get(id)
+
+  if (!currentEquipment) return null
+
+  const passwordEncrypted = equipment.password
+    ? encryptPassword(equipment.password)
+    : currentEquipment.password_encrypted
+
+  db.prepare(`
     UPDATE equipments
     SET name = @name,
         host = @host,
@@ -70,11 +94,14 @@ export function updateEquipment(id, data) {
         username = @username,
         description = @description,
         favorite = @favorite,
+        password_encrypted = @passwordEncrypted,
         updated_at = CURRENT_TIMESTAMP
     WHERE id = @id
-  `).run({ ...equipment, id })
-
-  if (result.changes === 0) return null
+  `).run({
+    ...equipment,
+    passwordEncrypted,
+    id
+  })
 
   return db.prepare(`
     SELECT id, name, host, port, username,

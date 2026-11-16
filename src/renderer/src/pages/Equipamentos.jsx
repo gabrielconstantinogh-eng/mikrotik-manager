@@ -9,7 +9,9 @@ import {
   Router,
   X,
   Save,
-  LoaderCircle
+  LoaderCircle,
+  Eye,
+  EyeOff
 } from 'lucide-react'
 
 import Header from '../components/Header'
@@ -18,28 +20,32 @@ import { equipmentService } from '../services/equipmentService'
 const inputClass =
   'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-blue-500'
 
-const emptyForm = {
-  name: '',
-  host: '',
-  port: '8291',
-  username: 'admin',
-  description: '',
-  favorite: false
-}
+  const emptyForm = {
+    name: '',
+    host: '',
+    port: '8291',
+    username: 'admin',
+    password: '',
+    description: '',
+    favorite: false
+  }
 
 function EquipmentModal({ equipment, onClose, onSave }) {
   const [form, setForm] = useState(
     equipment
       ? {
-          name: equipment.name,
-          host: equipment.host,
-          port: String(equipment.port),
-          username: equipment.username,
-          description: equipment.description || '',
-          favorite: Boolean(equipment.favorite)
-        }
+        name: equipment.name,
+        host: equipment.host,
+        port: String(equipment.port),
+        username: equipment.username,
+        password: '',
+        description: equipment.description || '',
+        favorite: Boolean(equipment.favorite)
+      }
       : emptyForm
   )
+
+  const [showPassword, setShowPassword] = useState(false)
 
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
@@ -152,6 +158,46 @@ function EquipmentModal({ equipment, onClose, onSave }) {
               required
             />
           </div>
+
+
+<div>
+  <label className="mb-1.5 block text-sm text-slate-300">
+    Senha
+  </label>
+
+  <div className="relative">
+    <input
+      name="password"
+      type={showPassword ? 'text' : 'password'}
+      value={form.password}
+      onChange={handleChange}
+      placeholder={
+        equipment
+          ? 'Deixe vazio para manter a senha atual'
+          : 'Senha do MikroTik (opcional)'
+      }
+      autoComplete="new-password"
+      className={`${inputClass} pr-11`}
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword((current) => !current)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-200"
+      title={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+    >
+      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+    </button>
+  </div>
+
+  {equipment && (
+    <p className="mt-1.5 text-xs text-slate-500">
+      Por segurança, a senha atual não é exibida. Informe uma nova senha
+      somente se desejar substituí-la.
+    </p>
+  )}
+</div>
+
 
           <div>
             <label className="mb-1.5 block text-sm text-slate-300">

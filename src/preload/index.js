@@ -17,6 +17,14 @@ const api = {
 
   security: {
     getStatus: () => ipcRenderer.invoke('security:status')
+  },
+
+  connectivity: {
+    check: (data) =>
+      ipcRenderer.invoke('connectivity:check', data),
+  
+    checkAll: () =>
+      ipcRenderer.invoke('connectivity:check-all')
   }
 }
 
